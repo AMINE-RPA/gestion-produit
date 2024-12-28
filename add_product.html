@@ -87,37 +87,86 @@
         </form>
     </div>
 
-    <script>
-        // Ajouter un produit
-        const addProductForm = document.getElementById('add-product-form');
-        addProductForm.addEventListener('submit', async (e) => {
+     <script>
+        // Ce code contient la logique pour ajouter un produit
+        const form = document.querySelector("#addProductForm");
+
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            const newProduct = {
-                name: document.getElementById('product-name').value,
-                secondaryName: document.getElementById('product-secondary-name').value,
-                price: parseFloat(document.getElementById('product-price').value).toFixed(2),
-                image: document.getElementById('product-image').value,
-            };
+            // Récupérer les valeurs du formulaire
+            const name = document.querySelector("#name").value;
+            const secondaryName = document.querySelector("#secondaryName").value;
+            const price = document.querySelector("#price").value;
+            const image = document.querySelector("#image").value;
 
-            const response = await fetch('https://api.github.com/repos/AMINE-RPA/gestion-produit/contents/products.json');
-            const products = await response.json();
-            products.push(newProduct);
+            // URL de l'API GitHub
+            const url = "https://api.github.com/repos/AMINE-RPA/gestion-produit/contents/products.json";
 
-            await fetch('https://api.github.com/repos/AMINE-RPA/gestion-produit/contents/products.json', {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'token <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>',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    message: 'Ajout d\'un nouveau produit',
-                    content: btoa(JSON.stringify(products, null, 2)),
-                }),
-            });
+            // Jeton GitHub (remplacez "votre-token" par votre vrai jeton)
+            const token = "votre-token";
 
-            alert('Produit ajouté avec succès!');
-            window.location.href = 'index.html';
+            try {
+                // Étape 1 : Récupérer le contenu actuel de products.json
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `token ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error("Impossible de récupérer le fichier products.json");
+                }
+
+                const data = await response.json();
+
+                // Décoder le contenu encodé en Base64
+                let products = JSON.parse(atob(data.content)); // Maintenant, products est un tableau
+
+                // Vérifiez si products est bien un tableau
+                if (!Array.isArray(products)) {
+                    throw new Error("Le contenu de products.json n'est pas un tableau valide !");
+                }
+
+                // Étape 2 : Ajouter le nouveau produit au tableau
+                const newProduct = {
+                    name,
+                    secondaryName,
+                    price,
+                    image,
+                };
+
+                products.push(newProduct); // Ajout du produit au tableau
+
+                // Étape 3 : Encoder en Base64 pour envoyer à l'API
+                const updatedContent = btoa(JSON.stringify(products, null, 2)); // Mise en forme propre
+
+                // Étape 4 : Mettre à jour le fichier sur GitHub
+                const updateResponse = await fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `token ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        message: "Ajout d'un nouveau produit",
+                        content: updatedContent,
+                        sha: data.sha, // Utilisez le SHA du fichier actuel
+                    }),
+                });
+
+                if (!updateResponse.ok) {
+                    throw new Error("Erreur lors de la mise à jour de products.json");
+                }
+
+                alert("Produit ajouté avec succès !");
+                form.reset(); // Réinitialiser le formulaire
+            } catch (error) {
+                console.error("Erreur :", error);
+                alert("Une erreur s'est produite. Consultez la console pour plus de détails.");
+            }
         });
     </script>
 </body>
