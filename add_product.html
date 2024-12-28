@@ -3,111 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un Produit</title>
+    <title>Ajouter un produit</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            background: #333;
-            padding: 0.5rem;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-        }
-        nav a:hover {
-            background-color: #575757;
-            border-radius: 5px;
-        }
-        .container {
-            padding: 1rem;
+            margin: 20px;
         }
         form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        form label {
+        label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: bold;
         }
-        form input {
-            padding: 0.5rem;
+        input, button, select {
             width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
-        form button {
-            background-color: #4CAF50;
+        button {
+            background-color: #007bff;
             color: white;
             border: none;
-            padding: 0.5rem;
             cursor: pointer;
         }
-        form button:hover {
-            background-color: #45a049;
+        button:hover {
+            background-color: #0056b3;
+        }
+        .image-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .image-preview img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Ajouter un Produit</h1>
-    </header>
-    <nav>
-        <a href="index.html">Produits</a>
-        <a href="add_product.html">Ajouter un Produit</a>
-    </nav>
+    <h1>Ajouter un produit</h1>
+    <form id="addProductForm">
+        <label for="name">Nom du produit :</label>
+        <input type="text" id="name" placeholder="Ex : Chaussures de sport" required>
 
-    <div class="container">
-        <h2>Ajouter un Nouveau Produit</h2>
-        <form id="add-product-form">
-            <label for="product-name">Nom du Produit</label>
-            <input type="text" id="name" required>
+        <label for="secondaryName">Catégorie :</label>
+        <select id="secondaryName" required>
+            <option value="" disabled selected>Choisir une catégorie</option>
+            <option value="Vêtements">Vêtements</option>
+            <option value="Électronique">Électronique</option>
+            <option value="Maison">Maison</option>
+            <option value="Autres">Autres</option>
+        </select>
 
-            <label for="product-secondary-name">Nom Secondaire</label>
-            <input type="text" id="secondary-name" required>
+        <label for="price">Prix (€) :</label>
+        <input type="number" id="price" placeholder="Ex : 50" required min="1">
 
-            <label for="product-price">Prix</label>
-            <input type="number" id="price" step="0.01" required>
+        <label for="image">Lien de l'image :</label>
+        <input type="url" id="image" placeholder="Ex : https://via.placeholder.com/150" required>
 
-            <label for="product-image">Lien de l'Image</label>
-            <input type="text" id="image" required>
+        <div class="image-preview" id="imagePreview">
+            <img src="" alt="Aperçu de l'image" id="previewImage" style="display: none;">
+        </div>
 
-            <button type="submit">Ajouter le Produit</button>
-        </form>
-    </div>
+        <button type="submit">Ajouter le produit</button>
+    </form>
 
-     <script>
-        // Ce code contient la logique pour ajouter un produit
-        const form = document.querySelector("#add-Product-Form");
+    <script>
+        // Affichage d'un aperçu d'image
+        const imageInput = document.getElementById("image");
+        const previewImage = document.getElementById("previewImage");
+        const imagePreview = document.getElementById("imagePreview");
 
+        imageInput.addEventListener("input", () => {
+            const imageUrl = imageInput.value;
+            if (imageUrl) {
+                previewImage.src = imageUrl;
+                previewImage.style.display = "block";
+            } else {
+                previewImage.style.display = "none";
+            }
+        });
+
+        // Gestion de la soumission du formulaire
+        const form = document.getElementById("addProductForm");
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            // Récupérer les valeurs du formulaire
-            const name = document.querySelector("#name").value;
-            const secondaryName = document.querySelector("#secondaryName").value;
-            const price = document.querySelector("#price").value;
-            const image = document.querySelector("#image").value;
+            // Récupération des données
+            const name = document.getElementById("name").value;
+            const secondaryName = document.getElementById("secondaryName").value;
+            const price = document.getElementById("price").value;
+            const image = document.getElementById("image").value;
 
-            // URL de l'API GitHub
-            const url = "https://raw.githubusercontent.com/AMINE-RPA/gestion-produit/refs/heads/main/products.json";
+            // Validation supplémentaire (facultative)
+            if (!name || !secondaryName || !price || !image) {
+                alert("Veuillez remplir tous les champs.");
+                return;
+            }
 
-            // Jeton GitHub (remplacez "votre-token" par votre vrai jeton)
-            const token = "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";
+            // Objet produit
+            const newProduct = {
+                name,
+                secondaryName,
+                price,
+                image,
+            };
+
+            console.log("Produit à ajouter :", newProduct);
+
+            // Ajout via l'API GitHub
+            const url = "https://api.github.com/repos/AMINE-RPA/gestion-produit/contents/products.json";
+            const token = "votre-token"; // Remplacez par votre token GitHub
 
             try {
-                // Étape 1 : Récupérer le contenu actuel de products.json
+                // Récupérer le contenu actuel
                 const response = await fetch(url, {
                     method: "GET",
                     headers: {
@@ -122,28 +143,16 @@
 
                 const data = await response.json();
 
-                // Décoder le contenu encodé en Base64
-                let products = JSON.parse(atob(data.content)); // Maintenant, products est un tableau
+                // Décodage du contenu actuel
+                let products = JSON.parse(atob(data.content));
 
-                // Vérifiez si products est bien un tableau
-                if (!Array.isArray(products)) {
-                    throw new Error("Le contenu de products.json n'est pas un tableau valide !");
-                }
+                // Ajout du nouveau produit
+                products.push(newProduct);
 
-                // Étape 2 : Ajouter le nouveau produit au tableau
-                const newProduct = {
-                    name,
-                    secondaryName,
-                    price,
-                    image,
-                };
+                // Encodage en Base64
+                const updatedContent = btoa(JSON.stringify(products, null, 2));
 
-                products.push(newProduct); // Ajout du produit au tableau
-
-                // Étape 3 : Encoder en Base64 pour envoyer à l'API
-                const updatedContent = btoa(JSON.stringify(products, null, 2)); // Mise en forme propre
-
-                // Étape 4 : Mettre à jour le fichier sur GitHub
+                // Mise à jour du fichier sur GitHub
                 const updateResponse = await fetch(url, {
                     method: "PUT",
                     headers: {
@@ -153,7 +162,7 @@
                     body: JSON.stringify({
                         message: "Ajout d'un nouveau produit",
                         content: updatedContent,
-                        sha: data.sha, // Utilisez le SHA du fichier actuel
+                        sha: data.sha,
                     }),
                 });
 
@@ -161,14 +170,14 @@
                     throw new Error("Erreur lors de la mise à jour de products.json");
                 }
 
-                alert("Produit ajouté avec succès !");
-                form.reset(); // Réinitialiser le formulaire
+                alert("Produit ajouté avec succès !");
+                form.reset(); // Réinitialisation du formulaire
+                previewImage.style.display = "none"; // Masquer l'aperçu de l'image
             } catch (error) {
                 console.error("Erreur :", error);
-                alert("Une erreur s'est produite. Consultez la console pour plus de détails.");
+                alert("Une erreur s'est produite. Consultez la console pour plus d'informations.");
             }
         });
     </script>
 </body>
 </html>
-
