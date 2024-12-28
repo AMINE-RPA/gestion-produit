@@ -3,13 +3,13 @@
         "name": "T-shirt Rouge",
         "secondaryName": "Un magnifique T-shirt rouge",
         "price": "19.99",
-        "image": "https://raw.githubusercontent.com/johndoe/gestion-produits/main/images/tshirt-rouge.jpg"
+        "image": "https://img.freepik.com/vecteurs-libre/vecteur-degrade-logo-colore-oiseau_343694-1365.jpg"
     },
     {
         "name": "Casquette Noire",
         "secondaryName": "Casquette élégante pour l'été",
         "price": "14.99",
-        "image": "https://raw.githubusercontent.com/johndoe/gestion-produits/main/images/casquette-noire.jpg"
+        "image": "https://img.freepik.com/vecteurs-libre/vecteur-degrade-logo-colore-oiseau_343694-1365.jpg"
     }
 ]
 
