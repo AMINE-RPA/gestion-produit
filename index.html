@@ -79,7 +79,7 @@
     <script>
         // Charger les produits depuis GitHub
         async function fetchProducts() {
-            const response = await fetch('https://api.github.com/repos/AMINE-RPA/gestion-produit/contents/products.json');
+            const response = await fetch('https://raw.githubusercontent.com/AMINE-RPA/gestion-produit/refs/heads/main/products.json');
             const products = await response.json();
             return products;
         }
