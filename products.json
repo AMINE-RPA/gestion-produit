@@ -1,1 +1,15 @@
-[]
+[
+    {
+        "name": "T-shirt Rouge",
+        "secondaryName": "Un magnifique T-shirt rouge",
+        "price": "19.99",
+        "image": "https://raw.githubusercontent.com/johndoe/gestion-produits/main/images/tshirt-rouge.jpg"
+    },
+    {
+        "name": "Casquette Noire",
+        "secondaryName": "Casquette élégante pour l'été",
+        "price": "14.99",
+        "image": "https://raw.githubusercontent.com/johndoe/gestion-produits/main/images/casquette-noire.jpg"
+    }
+]
+
