@@ -100,11 +100,11 @@
                 image: document.getElementById('product-image').value,
             };
 
-            const response = await fetch('https://raw.githubusercontent.com/<your-username>/<your-repo>/main/products.json');
+            const response = await fetch('https://raw.githubusercontent.com/AMINE-RPA/gestion-produit/refs/heads/main/products.json');
             const products = await response.json();
             products.push(newProduct);
 
-            await fetch('https://api.github.com/repos/<your-username>/<your-repo>/contents/products.json', {
+            await fetch('https://raw.githubusercontent.com/AMINE-RPA/gestion-produit/refs/heads/main/products.json', {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'token <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>',
