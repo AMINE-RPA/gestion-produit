@@ -1,1 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Produits</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            background: #333;
+            padding: 0.5rem;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+        }
+        nav a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+        }
+        .container {
+            padding: 1rem;
+        }
+        .product {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+        .product img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        .search-bar {
+            margin-bottom: 1rem;
+        }
+        input[type="text"] {
+            padding: 0.5rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Liste des Produits</h1>
+    </header>
+    <nav>
+        <a href="index.html">Produits</a>
+        <a href="add_product.html">Ajouter un Produit</a>
+    </nav>
 
+    <div class="container">
+        <h2>Liste des Produits</h2>
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Rechercher un produit...">
+        </div>
+        <div id="product-list"></div>
+    </div>
+
+    <script>
+        // Charger les produits depuis GitHub
+        async function fetchProducts() {
+            const response = await fetch('https://raw.githubusercontent.com/<your-username>/<your-repo>/main/products.json');
+            const products = await response.json();
+            return products;
+        }
+
+        // Afficher les produits
+        async function displayProducts() {
+            const productList = document.getElementById('product-list');
+            const products = await fetchProducts();
+            productList.innerHTML = '';
+
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <div>
+                        <h3>${product.name}</h3>
+                        <p>${product.secondaryName}</p>
+                        <p><strong>${product.price} €</strong></p>
+                    </div>
+                `;
+                productList.appendChild(productDiv);
+            });
+        }
+
+        // Recherche de produits
+        document.getElementById('search').addEventListener('input', async () => {
+            const searchValue = document.getElementById('search').value.toLowerCase();
+            const products = await fetchProducts();
+            const filteredProducts = products.filter(product =>
+                product.name.toLowerCase().includes(searchValue) ||
+                product.secondaryName.toLowerCase().includes(searchValue)
+            );
+
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+            filteredProducts.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <div>
+                        <h3>${product.name}</h3>
+                        <p>${product.secondaryName}</p>
+                        <p><strong>${product.price} €</strong></p>
+                    </div>
+                `;
+                productList.appendChild(productDiv);
+            });
+        });
+
+        // Charger les produits au démarrage
+        displayProducts();
+    </script>
+</body>
+</html>
