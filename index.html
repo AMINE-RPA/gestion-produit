@@ -95,9 +95,33 @@ const url = `https://api.jsonbin.io/v3/b/677163d1ad19ca34f8e29e4d`;
 
 let allProducts = []; // Variable pour stocker tous les produits
 
-async function fetchProducts() {
+    // Fonction pour afficher les produits
+    function displayProducts(products) {
+        const productContainer = document.getElementById("products");
+        productContainer.innerHTML = ""; // Réinitialiser le conteneur
+
+        if (products.length === 0) {
+            productContainer.innerHTML = "<p>Aucun produit trouvé.</p>";
+            return;
+        }
+
+        // Ajouter chaque produit au conteneur
+        products.forEach((product) => {
+            const productHTML = `
+                <div class="product">
+                    <img src="${product.image}" alt="${product.name}" />
+                    <h2>${product.name}</h2>
+                    <p>${product.secondaryName}</p>
+                    <p><strong>Prix : ${product.price} €</strong></p>
+                </div>
+            `;
+            productContainer.innerHTML += productHTML;
+        });
+    }
+
+    // Fonction pour récupérer les produits depuis JSONBin.io
+    async function fetchProducts() {
         try {
-            // Récupérer les produits depuis JSONBin.io
             const response = await fetch(url, {
                 headers: {
                     "X-Master-Key": apiKey,
@@ -110,24 +134,9 @@ async function fetchProducts() {
             }
 
             const data = await response.json();
-            const products = data.record; // Les produits sont dans "record"
+            allProducts = data.record; // Stocker les produits récupérés
 
-            // Sélectionner l'élément HTML où afficher les produits
-            const productContainer = document.getElementById("products");
-            productContainer.innerHTML = ""; // Réinitialiser le conteneur
-
-            // Ajouter chaque produit au conteneur
-            products.forEach((product) => {
-                const productHTML = `
-                    <div class="product">
-                        <img src="${product.image}" alt="${product.name}" />
-                        <h2>${product.name}</h2>
-                        <p>${product.secondaryName}</p>
-                        <p><strong>Prix : ${product.price} €</strong></p>
-                    </div>
-                `;
-                productContainer.innerHTML += productHTML;
-            });
+            displayProducts(allProducts); // Afficher les produits
         } catch (err) {
             console.error(err);
             document.getElementById("products").innerHTML =
@@ -136,19 +145,19 @@ async function fetchProducts() {
     }
 
     // Gestionnaire d'événements pour la barre de recherche
-const searchBar = document.getElementById("searchBar");
-searchBar.addEventListener("input", (e) => {
-    const keyword = e.target.value.toLowerCase(); // Récupérer le mot-clé en minuscules
+    const searchBar = document.getElementById("searchBar");
+    searchBar.addEventListener("input", (e) => {
+        const keyword = e.target.value.toLowerCase(); // Récupérer le mot-clé en minuscules
 
-    // Filtrer les produits
-    const filteredProducts = allProducts.filter((product) =>
-        product.name.toLowerCase().includes(keyword) || // Filtrer par nom
-        product.secondaryName.toLowerCase().includes(keyword) // Filtrer par catégorie
-    );
+        // Filtrer les produits
+        const filteredProducts = allProducts.filter((product) =>
+            product.name.toLowerCase().includes(keyword) || // Filtrer par nom
+            product.secondaryName.toLowerCase().includes(keyword) // Filtrer par catégorie
+        );
 
-    displayProducts(filteredProducts); // Afficher les produits filtrés
-});
-        
+        displayProducts(filteredProducts); // Afficher les produits filtrés
+    });
+
     // Charger les produits au chargement de la page
     window.onload = fetchProducts;
 </script>
