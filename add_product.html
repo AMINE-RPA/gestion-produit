@@ -22,7 +22,7 @@
             margin-bottom: 8px;
             font-weight: bold;
         }
-        input, button, select {
+        input, button {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -38,34 +38,24 @@
         button:hover {
             background-color: #0056b3;
         }
-        .image-preview {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 15px;
+        .success {
+            color: green;
+            font-weight: bold;
         }
-        .image-preview img {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .error {
+            color: red;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h1>Ajouter UN produit</h1>
+    <h1>Ajouter un produit</h1>
     <form id="addProductForm">
         <label for="name">Nom du produit :</label>
         <input type="text" id="name" placeholder="Ex : Chaussures de sport" required>
 
         <label for="secondaryName">Catégorie :</label>
-        <select id="secondaryName" required>
-            <option value="" disabled selected>Choisir une catégorie</option>
-            <option value="Vêtements">Vêtements</option>
-            <option value="Électronique">Électronique</option>
-            <option value="Maison">Maison</option>
-            <option value="Autres">Autres</option>
-        </select>
+        <input type="text" id="secondaryName" placeholder="Ex : Vêtements" required>
 
         <label for="price">Prix (€) :</label>
         <input type="number" id="price" placeholder="Ex : 50" required min="1">
@@ -73,47 +63,33 @@
         <label for="image">Lien de l'image :</label>
         <input type="url" id="image" placeholder="Ex : https://via.placeholder.com/150" required>
 
-        <div class="image-preview" id="imagePreview">
-            <img src="" alt="Aperçu de l'image" id="previewImage" style="display: none;">
-        </div>
-
         <button type="submit">Ajouter le produit</button>
     </form>
 
+    <p id="message" class="success" style="display: none;">Produit ajouté avec succès !</p>
+    <p id="error" class="error" style="display: none;">Erreur lors de l'ajout du produit.</p>
+
     <script>
-        // Affichage d'un aperçu d'image
-        const imageInput = document.getElementById("image");
-        const previewImage = document.getElementById("previewImage");
-        const imagePreview = document.getElementById("imagePreview");
-
-        imageInput.addEventListener("input", () => {
-            const imageUrl = imageInput.value;
-            if (imageUrl) {
-                previewImage.src = imageUrl;
-                previewImage.style.display = "block";
-            } else {
-                previewImage.style.display = "none";
-            }
-        });
-
-        // Gestion de la soumission du formulaire
         const form = document.getElementById("addProductForm");
+        const message = document.getElementById("message");
+        const error = document.getElementById("error");
+
+        // ID de votre bin JSONBin.io
+        const binId = "677163d1ad19ca34f8e29e4d"; // Remplacez par l'ID de votre bin
+        const apiKey = "$2a$10$YmJPzuGrgpnW7kmiRz3jruNC6GeFFaEqm07oDC675bkm2XidqSu/i"; // Remplacez par votre clé API JSONBin.io
+
+        // URL de l'API JSONBin.io
+        const url = `https://api.jsonbin.io/v3/b/677163d1ad19ca34f8e29e4d`;
+
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            // Récupération des données
+            // Récupération des données du formulaire
             const name = document.getElementById("name").value;
             const secondaryName = document.getElementById("secondaryName").value;
             const price = document.getElementById("price").value;
             const image = document.getElementById("image").value;
 
-            // Validation supplémentaire (facultative)
-            if (!name || !secondaryName || !price || !image) {
-                alert("Veuillez remplir tous les champs.");
-                return;
-            }
-
-            // Objet produit
             const newProduct = {
                 name,
                 secondaryName,
@@ -121,61 +97,47 @@
                 image,
             };
 
-            console.log("Produit à ajouter :", newProduct);
-
-            // Ajout via l'API GitHub
-            const url = "https://api.github.com/repos/AMINE-RPA/gestion-produit/contents/products.json";
-            const token = "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"; // Remplacez par votre token GitHub
-
             try {
-                // Récupérer le contenu actuel
-                const response = await fetch(url, {
-                    method: "GET",
+                // Récupérer les produits actuels
+                const getResponse = await fetch(url, {
                     headers: {
-                        "Authorization": `token ${token}`,
+                        "X-Master-Key": apiKey,
                         "Content-Type": "application/json",
                     },
                 });
 
-                if (!response.ok) {
-                    throw new Error("Impossible de récupérer le fichier products.json");
+                if (!getResponse.ok) {
+                    throw new Error("Impossible de récupérer les produits existants.");
                 }
 
-                const data = await response.json();
+                const data = await getResponse.json();
+                const currentProducts = data.record;
 
-                // Décodage du contenu actuel
-                let products = JSON.parse(atob(data.content));
+                // Ajouter le nouveau produit
+                currentProducts.push(newProduct);
 
-                // Ajout du nouveau produit
-                products.push(newProduct);
-
-                // Encodage en Base64
-                const updatedContent = btoa(JSON.stringify(products, null, 2));
-
-                // Mise à jour du fichier sur GitHub
+                // Mise à jour des produits
                 const updateResponse = await fetch(url, {
                     method: "PUT",
                     headers: {
-                        "Authorization": `token ${token}`,
+                        "X-Master-Key": apiKey,
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        message: "Ajout d'un nouveau produit",
-                        content: updatedContent,
-                        sha: data.sha,
-                    }),
+                    body: JSON.stringify(currentProducts),
                 });
 
                 if (!updateResponse.ok) {
-                    throw new Error("Erreur lors de la mise à jour de products.json");
+                    throw new Error("Erreur lors de la mise à jour des produits.");
                 }
 
-                alert("Produit ajouté avec succès !");
-                form.reset(); // Réinitialisation du formulaire
-                previewImage.style.display = "none"; // Masquer l'aperçu de l'image
-            } catch (error) {
-                console.error("Erreur :", error);
-                alert("Une erreur s'est produite. Consultez la console pour plus d'informations.");
+                // Succès
+                message.style.display = "block";
+                error.style.display = "none";
+                form.reset(); // Réinitialiser le formulaire
+            } catch (err) {
+                console.error(err);
+                message.style.display = "none";
+                error.style.display = "block";
             }
         });
     </script>
