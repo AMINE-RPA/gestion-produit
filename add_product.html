@@ -3,52 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un produit</title>
+    <title>Liste des Produits</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
         }
-        form {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
         }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            background: #333;
+            padding: 0.5rem;
         }
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+        }
+        nav a:hover {
+            background-color: #575757;
             border-radius: 5px;
         }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
+        .container {
+            padding: 1rem;
         }
-        button:hover {
-            background-color: #0056b3;
+        .product {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
         }
-        .success {
-            color: green;
-            font-weight: bold;
+        .product img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 1rem;
         }
-        .error {
-            color: red;
-            font-weight: bold;
+        .search-bar {
+            margin-bottom: 1rem;
+        }
+        input[type="text"] {
+            padding: 0.5rem;
+            width: 100%;
+            box-sizing: border-box;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Liste des Produits</h1>
+    </header>
+    <nav>
+        <a href="index.html">Produits</a>
+        <a href="add_product.html">Ajouter un Produit</a>
+    </nav>
+
     <h1>Ajouter un produit</h1>
     <form id="addProductForm">
         <label for="name">Nom du produit :</label>
