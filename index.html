@@ -80,49 +80,60 @@
     </div>
 
     <script>
- const binId = "677163d1ad19ca34f8e29e4d"; // Remplacez par votre ID de bin JSONBin.io
-    const apiKey = "$2a$10$YmJPzuGrgpnW7kmiRz3jruNC6GeFFaEqm07oDC675bkm2XidqSu/i"; // Remplacez par votre clé API Master Key
-    const url = `https://api.jsonbin.io/v3/b/677163d1ad19ca34f8e29e4d`;
-    async function fetchProducts() {
-        try {
-            // Récupérer les produits depuis JSONBin.io
-            const response = await fetch(url, {
-                headers: {
-                    "X-Master-Key": apiKey,
-                    "Content-Type": "application/json",
-                },
-            });
-            if (!response.ok) {
-                throw new Error("Erreur lors de la récupération des produits.");
-            }
-            const data = await response.json();
-            const products = data.record; // Les produits sont dans "record"
-            // Sélectionner l'élément HTML où afficher les produits
-            const productContainer = document.getElementById("products");
-            productContainer.innerHTML = ""; // Réinitialiser le conteneur
-            
-            // Ajouter chaque produit au conteneur
-            
-            products.forEach((product) => {
-                const productHTML = `
-                    <div class="product">
-                        <img src="${product.image}" alt="${product.name}" />
-                        <h2>${product.name}</h2>
-                        <p>${product.secondaryName}</p>
-                        <p><strong>Prix : ${product.price} €</strong></p>
-                    </div>
-                `;
-                productContainer.innerHTML += productHTML;
-            });
+    const binId = "VOTRE_BIN_ID"; // Remplacez par votre ID de bin JSONBin.io
+const apiKey = "VOTRE_MASTER_KEY"; // Remplacez par votre clé API Master Key
+const url = `https://api.jsonbin.io/v3/b/${binId}/latest`;
 
-            
-        } catch (err) {
-            console.error(err);
-            document.getElementById("products").innerHTML =
-                "<p class='error'>Impossible de charger les produits.</p>";
-   displayProducts(filteredProducts); // Afficher les produits filtrés
-});
+let allProducts = []; // Variable pour stocker tous les produits
 
+async function fetchProducts() {
+    try {
+        // Récupérer les produits depuis JSONBin.io
+        const response = await fetch(url, {
+            headers: {
+                "X-Master-Key": apiKey,
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des produits.");
+        }
+
+        const data = await response.json();
+        allProducts = data.record; // Stocker les produits récupérés
+
+        displayProducts(allProducts); // Afficher les produits
+    } catch (err) {
+        console.error(err);
+        document.getElementById("products").innerHTML =
+            "<p class='error'>Impossible de charger les produits.</p>";
+    }
+}
+
+// Fonction pour afficher les produits
+function displayProducts(products) {
+    const productContainer = document.getElementById("products");
+    productContainer.innerHTML = ""; // Réinitialiser le conteneur
+
+    if (products.length === 0) {
+        productContainer.innerHTML = "<p>Aucun produit trouvé.</p>";
+        return;
+    }
+
+    // Ajouter chaque produit au conteneur
+    products.forEach((product) => {
+        const productHTML = `
+            <div class="product">
+                <img src="${product.image}" alt="${product.name}" />
+                <h2>${product.name}</h2>
+                <p>${product.secondaryName}</p>
+                <p><strong>Prix : ${product.price} €</strong></p>
+            </div>
+        `;
+        productContainer.innerHTML += productHTML;
+    });
+}
 
 // Gestionnaire d'événements pour la barre de recherche
 const searchBar = document.getElementById("searchBar");
@@ -134,6 +145,9 @@ searchBar.addEventListener("input", (e) => {
         product.name.toLowerCase().includes(keyword) || // Filtrer par nom
         product.secondaryName.toLowerCase().includes(keyword) // Filtrer par catégorie
     );
+
+    displayProducts(filteredProducts); // Afficher les produits filtrés
+});
 
 // Charger les produits au chargement de la page
 window.onload = fetchProducts;
