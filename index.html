@@ -77,62 +77,53 @@
     </div>
 
     <script>
-        // Charger les produits depuis GitHub
-        async function fetchProducts() {
-            const response = await fetch('https://raw.githubusercontent.com/AMINE-RPA/gestion-produit/refs/heads/main/products.json');
-            const products = await response.json();
-            return products;
-        }
+    const binId = "677163d1ad19ca34f8e29e4d"; // Remplacez par votre ID de bin JSONBin.io
+    const apiKey = "$2a$10$YmJPzuGrgpnW7kmiRz3jruNC6GeFFaEqm07oDC675bkm2XidqSu/i"; // Remplacez par votre clé API Master Key
+    const url = `https://api.jsonbin.io/v3/b/677163d1ad19ca34f8e29e4d`;
 
-        // Afficher les produits
-        async function displayProducts() {
-            const productList = document.getElementById('product-list');
-            const products = await fetchProducts();
-            productList.innerHTML = '';
+    async function fetchProducts() {
+        try {
+            // Récupérer les produits depuis JSONBin.io
+            const response = await fetch(url, {
+                headers: {
+                    "X-Master-Key": apiKey,
+                    "Content-Type": "application/json",
+                },
+            });
 
-            products.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.className = 'product';
-                productDiv.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <div>
-                        <h3>${product.name}</h3>
+            if (!response.ok) {
+                throw new Error("Erreur lors de la récupération des produits.");
+            }
+
+            const data = await response.json();
+            const products = data.record; // Les produits sont dans "record"
+
+            // Sélectionner l'élément HTML où afficher les produits
+            const productContainer = document.getElementById("products");
+            productContainer.innerHTML = ""; // Réinitialiser le conteneur
+
+            // Ajouter chaque produit au conteneur
+            products.forEach((product) => {
+                const productHTML = `
+                    <div class="product">
+                        <img src="${product.image}" alt="${product.name}" />
+                        <h2>${product.name}</h2>
                         <p>${product.secondaryName}</p>
-                        <p><strong>${product.price} €</strong></p>
+                        <p><strong>Prix : ${product.price} €</strong></p>
                     </div>
                 `;
-                productList.appendChild(productDiv);
+                productContainer.innerHTML += productHTML;
             });
+        } catch (err) {
+            console.error(err);
+            document.getElementById("products").innerHTML =
+                "<p class='error'>Impossible de charger les produits.</p>";
         }
+    }
 
-        // Recherche de produits
-        document.getElementById('search').addEventListener('input', async () => {
-            const searchValue = document.getElementById('search').value.toLowerCase();
-            const products = await fetchProducts();
-            const filteredProducts = products.filter(product =>
-                product.name.toLowerCase().includes(searchValue) ||
-                product.secondaryName.toLowerCase().includes(searchValue)
-            );
+    // Charger les produits au chargement de la page
+    window.onload = fetchProducts;
+</script>
 
-            const productList = document.getElementById('product-list');
-            productList.innerHTML = '';
-            filteredProducts.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.className = 'product';
-                productDiv.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <div>
-                        <h3>${product.name}</h3>
-                        <p>${product.secondaryName}</p>
-                        <p><strong>${product.price} €</strong></p>
-                    </div>
-                `;
-                productList.appendChild(productDiv);
-            });
-        });
-
-        // Charger les produits au démarrage
-        displayProducts();
-    </script>
 </body>
 </html>
