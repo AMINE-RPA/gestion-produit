@@ -69,10 +69,19 @@
     </nav>
 
     <div class="container">
+        
         <h2>Liste des Produits</h2>
+
         <div class="search-bar">
-            <input type="text" id="search" placeholder="Rechercher un produit...">
+            <input 
+                type="text" 
+                id="searchBar" 
+                placeholder="Rechercher un produit..." 
+                style="width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px;"
+            >
+            
         </div>
+        
         <div id="products">
             <!-- Les produits seront affichés ici -->
             <p>Chargement des produits...</p>
@@ -126,6 +135,20 @@ async function fetchProducts() {
         }
     }
 
+    // Gestionnaire d'événements pour la barre de recherche
+const searchBar = document.getElementById("searchBar");
+searchBar.addEventListener("input", (e) => {
+    const keyword = e.target.value.toLowerCase(); // Récupérer le mot-clé en minuscules
+
+    // Filtrer les produits
+    const filteredProducts = allProducts.filter((product) =>
+        product.name.toLowerCase().includes(keyword) || // Filtrer par nom
+        product.secondaryName.toLowerCase().includes(keyword) // Filtrer par catégorie
+    );
+
+    displayProducts(filteredProducts); // Afficher les produits filtrés
+});
+        
     // Charger les produits au chargement de la page
     window.onload = fetchProducts;
 </script>
