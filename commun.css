@@ -1,4 +1,41 @@
-
+ body {
+            font-family: 'roboto';
+              
+            margin: 0;
+            padding: 0;
+            background-color:#DEDEDE;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            background: #333;
+            padding: 0.5rem;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+        }
+        nav a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+        }
+        
+        .search-bar {
+            margin-bottom: 1rem;
+        }
+        input[type="text"] {
+            padding: 0.5rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
 
 //font family
