@@ -39,15 +39,14 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 1rem;
-            margin: 0.5rem 0;
-            display: flex;
+            margin: 0.5px;
+            display: inline-block;
             align-items: center;
         }
         .product img {
             width: 100px;
             height: 100px;
             object-fit: cover;
-            margin-right: 1rem;
         }
         .search-bar {
             margin-bottom: 1rem;
@@ -109,10 +108,25 @@ let allProducts = []; // Variable pour stocker tous les produits
         products.forEach((product) => {
             const productHTML = `
                 <div class="product">
-                    <img src="${product.image}" alt="${product.name}" />
-                    <h2>${product.name}</h2>
-                    <p>${product.secondaryName}</p>
-                    <p><strong>Prix : ${product.price} €</strong></p>
+                    <div class="product-promo-div">
+                        //futur fonctionaité pour affiché les promotion
+                        
+                    </div>
+                    <div class="product-img-div">
+                        //image du produit
+                        <img src="${product.image}" alt="${product.name}" />
+                    </div>
+                    <div class="product-desc">
+                        //description du produit
+                        <h2>${product.name}</h2>
+                        <p>${product.secondaryName}</p>
+                        <p><strong>Prix : ${product.price} €</strong></p>
+                    </div>
+                    
+                    <div class="product-button">
+                        //pour ajouter des futur bouton comme ajouter au pannier
+                    </div>
+                   
                 </div>
             `;
             productContainer.innerHTML += productHTML;
