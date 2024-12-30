@@ -194,10 +194,11 @@ let allProducts = []; // Variable pour stocker tous les produits
         products.forEach((product) => {
             const productHTML = `
                 <div class="product">
-                
+                      /*
                     <div class="product-promo-div">
                         <!--futur fonctionaité pour affiché les promotion-->   
                     </div>
+                    */
                     
                     <div class="product-img-div">
                         <!--image du produit-->
@@ -210,11 +211,11 @@ let allProducts = []; // Variable pour stocker tous les produits
                         <p>${product.secondaryName}</p>
                         <p><strong>Prix : ${product.price} €</strong></p>
                     </div>
-                    
+                    /*
                     <div class="product-button">
                         <!--pour ajouter des futur bouton comme ajouter au pannier-->
                     </div>
-                   
+                   */
                 </div>
             `;
             productContainer.innerHTML += productHTML;
