@@ -7,134 +7,153 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
         }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 1rem;
-            text-align: center;
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            background: #333;
-            padding: 0.5rem;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-        }
-        nav a:hover {
-            background-color: #575757;
-            border-radius: 5px;
-        }
+
         .product {
             border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 1rem;
-            margin: 0.5px;
-            widht: 230px;
-            height:470px;
-            display: inline-block;
-            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
         }
+
         .product img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
+            width: 150px;
+            height: auto;
         }
-        .edit-form, .add-form {
-            display: none;
-            margin-top: 20px;
+
+        .modal {
+            display: none; /* Caché par défaut */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7); /* Fond sombre semi-transparent */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-
-    <header>
-        <h1>Liste des Produits</h1>
-    </header>
-    
-    <nav>
-        <a href="index.html">Produits</a>
-        <a href="add_product.html">Ajouter un Produit</a>
-    </nav>
-
-    
     <h1>Modifier les produits</h1>
 
-    <!-- Bouton pour ajouter un produit -->
+    <!-- Bouton pour afficher le formulaire d'ajout -->
     <button id="addProductButton">Ajouter un produit</button>
-
-    <!-- Formulaire pour ajouter un produit -->
-    <div class="add-form" id="addForm">
-        <h2>Ajouter un nouveau produit</h2>
-        <form id="addProductForm">
-            <label>
-                Nom du produit :
-                <input type="text" id="addName" required>
-            </label>
-            <br><br>
-            <label>
-                Second nom :
-                <input type="text" id="addSecondaryName" required>
-            </label>
-            <br><br>
-            <label>
-                Prix :
-                <input type="number" id="addPrice" required>
-            </label>
-            <br><br>
-            <label>
-                Image (URL) :
-                <input type="text" id="addImage" required>
-            </label>
-            <br><br>
-            <button type="submit">Ajouter le produit</button>
-        </form>
-    </div>
 
     <!-- Conteneur des produits -->
     <div id="products">
         <p>Chargement des produits...</p>
     </div>
 
-    <!-- Formulaire de modification -->
-    <div class="edit-form" id="editForm">
-        <h2>Modifier un produit</h2>
-        <form id="modifyProductForm">
-            <label>
-                Nom du produit :
-                <input type="text" id="editName" required>
-            </label>
-            <br><br>
-            <label>
-                Second nom :
-                <input type="text" id="editSecondaryName" required>
-            </label>
-            <br><br>
-            <label>
-                Prix :
-                <input type="number" id="editPrice" required>
-            </label>
-            <br><br>
-            <label>
-                Image (URL) :
-                <input type="text" id="editImage" required>
-            </label>
-            <br><br>
-            <button type="submit">Enregistrer les modifications</button>
-        </form>
+    <!-- Fenêtre modale pour ajouter un produit -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="addModalClose">&times;</span>
+            <h2>Ajouter un nouveau produit</h2>
+            <form id="addProductForm">
+                <label>
+                    Nom du produit :
+                    <input type="text" id="addName" required>
+                </label>
+                <br><br>
+                <label>
+                    Second nom :
+                    <input type="text" id="addSecondaryName" required>
+                </label>
+                <br><br>
+                <label>
+                    Prix :
+                    <input type="number" id="addPrice" required>
+                </label>
+                <br><br>
+                <label>
+                    Quantité :
+                    <input type="number" id="addQuantity" required>
+                </label>
+                <br><br>
+                <label>
+                    Image (URL) :
+                    <input type="text" id="addImage" required>
+                </label>
+                <br><br>
+                <button type="submit">Ajouter le produit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Fenêtre modale pour modifier un produit -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="editModalClose">&times;</span>
+            <h2>Modifier un produit</h2>
+            <form id="modifyProductForm">
+                <label>
+                    Nom du produit :
+                    <input type="text" id="editName" required>
+                </label>
+                <br><br>
+                <label>
+                    Second nom :
+                    <input type="text" id="editSecondaryName" required>
+                </label>
+                <br><br>
+                <label>
+                    Prix :
+                    <input type="number" id="editPrice" required>
+                </label>
+                <br><br>
+                <label>
+                    Quantité :
+                    <input type="number" id="editQuantity" required>
+                </label>
+                <br><br>
+                <label>
+                    Image (URL) :
+                    <input type="text" id="editImage" required>
+                </label>
+                <br><br>
+                <button type="submit">Enregistrer les modifications</button>
+            </form>
+        </div>
     </div>
 
     <script>
         const binId = "677163d1ad19ca34f8e29e4d"; // Remplacez par votre ID de bin JSONBin.io
-        const apiKey = "$2a$10$YmJPzuGrgpnW7kmiRz3jruNC6GeFFaEqm07oDC675bkm2XidqSu/i"; // Remplacez par votre clé API Master Key
-        const url = `https://api.jsonbin.io/v3/b/677163d1ad19ca34f8e29e4d`;
+const apiKey = "$2a$10$YmJPzuGrgpnW7kmiRz3jruNC6GeFFaEqm07oDC675bkm2XidqSu/i"; // Remplacez par votre clé API Master Key
+const url = `https://api.jsonbin.io/v3/b/677163d1ad19ca34f8e29e4d`;
 
         let allProducts = []; // Liste de tous les produits
         let currentProductIndex = null; // Index du produit à modifier
@@ -182,6 +201,7 @@
                         <h2>${product.name}</h2>
                         <p>${product.secondaryName}</p>
                         <p><strong>Prix : ${product.price} €</strong></p>
+                        <p><strong>Quantité : ${product.quantity}</strong></p>
                         <button onclick="editProduct(${index})">Modifier</button>
                     </div>
                 `;
@@ -198,10 +218,11 @@
             document.getElementById("editName").value = product.name;
             document.getElementById("editSecondaryName").value = product.secondaryName;
             document.getElementById("editPrice").value = product.price;
+            document.getElementById("editQuantity").value = product.quantity;
             document.getElementById("editImage").value = product.image;
 
-            // Afficher le formulaire
-            document.getElementById("editForm").style.display = "block";
+            // Afficher la fenêtre modale de modification
+            document.getElementById("editModal").style.display = "block";
         }
 
         // Soumettre les modifications
@@ -213,6 +234,7 @@
                 name: document.getElementById("editName").value,
                 secondaryName: document.getElementById("editSecondaryName").value,
                 price: parseFloat(document.getElementById("editPrice").value),
+                quantity: parseInt(document.getElementById("editQuantity").value),
                 image: document.getElementById("editImage").value,
             };
 
@@ -235,7 +257,7 @@
                 }
 
                 alert("Produit modifié avec succès !");
-                document.getElementById("editForm").style.display = "none"; // Cacher le formulaire
+                document.getElementById("editModal").style.display = "none"; // Cacher la fenêtre modale
                 displayProducts(allProducts); // Réafficher les produits mis à jour
             } catch (err) {
                 console.error(err);
@@ -243,9 +265,18 @@
             }
         });
 
-        // Afficher le formulaire d'ajout
+        // Afficher la fenêtre modale d'ajout
         document.getElementById("addProductButton").addEventListener("click", () => {
-            document.getElementById("addForm").style.display = "block";
+            document.getElementById("addModal").style.display = "block";
+        });
+
+        // Fermer les fenêtres modales
+        document.getElementById("addModalClose").addEventListener("click", () => {
+            document.getElementById("addModal").style.display = "none";
+        });
+
+        document.getElementById("editModalClose").addEventListener("click", () => {
+            document.getElementById("editModal").style.display = "none";
         });
 
         // Soumettre un nouveau produit
@@ -257,6 +288,7 @@
                 name: document.getElementById("addName").value,
                 secondaryName: document.getElementById("addSecondaryName").value,
                 price: parseFloat(document.getElementById("addPrice").value),
+                quantity: parseInt(document.getElementById("addQuantity").value),
                 image: document.getElementById("addImage").value,
             };
 
@@ -279,7 +311,7 @@
                 }
 
                 alert("Produit ajouté avec succès !");
-                document.getElementById("addForm").style.display = "none"; // Cacher le formulaire
+                document.getElementById("addModal").style.display = "none"; // Cacher la fenêtre modale
                 displayProducts(allProducts); // Réafficher les produits
             } catch (err) {
                 console.error(err);
