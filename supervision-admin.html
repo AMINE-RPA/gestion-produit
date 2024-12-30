@@ -213,13 +213,29 @@ const url = `https://api.jsonbin.io/v3/b/677163d1ad19ca34f8e29e4d`;
             products.forEach((product, index) => {
                 const productHTML = `
                     <div class="product">
+                      
+                    <div class="product-promo-div">
+                        <!--futur fonctionaité pour affiché les promotion-->   
+                    </div>
+                    
+                    
+                    <div class="product-img-div">
+                        <!--image du produit-->
                         <img src="${product.image}" alt="${product.name}" />
+                    </div>
+                    
+                    <div class="product-desc">
+                        <!--description du produit-->
                         <h2>${product.name}</h2>
                         <p>${product.secondaryName}</p>
                         <p><strong>Prix : ${product.price} €</strong></p>
-                        <p><strong>Quantité : ${product.quantity}</strong></p>
-                        <button onclick="editProduct(${index})">Modifier</button>
                     </div>
+                    
+                    <div class="product-button">
+                        <!--pour ajouter des futur bouton comme ajouter au pannier-->
+                    </div>
+                   <button onclick="editProduct(${index})">Modifier</button>
+                </div>
                 `;
                 productContainer.innerHTML += productHTML;
             });
