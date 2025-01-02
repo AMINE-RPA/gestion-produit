@@ -45,7 +45,7 @@
         }
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 0.7fr));
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
             gap: 20px;
             padding: 20px;
         }
@@ -58,7 +58,7 @@
         }
         .produt-img-div, img {
             width: 100%;
-            height: 150px;
+            height: 180px;
             object-fit: cover; 
         }
         .product h3 {
