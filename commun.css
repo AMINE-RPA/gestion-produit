@@ -39,9 +39,15 @@
 
 
 // product vente ui
-.container {
+        .container {
             text-align: center;
             padding: 1rem;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 0.7fr));
+            gap: 20px;
+            padding: 20px;
         }
         .product {
             border: 1px solid #ddd;
