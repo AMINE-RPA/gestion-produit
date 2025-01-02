@@ -71,8 +71,7 @@
             
         </div>
         
-        <div id="products" style="
-    text-align: center;">
+        <div id="products" class="product-grid">
             <!-- Les produits seront affichés ici -->
             <p>Chargement des produits...</p>
         </div>
@@ -114,11 +113,11 @@ let allProducts = []; // Variable pour stocker tous les produits
                         <!--description du produit-->
                         <h2>${product.name}</h2>
                         <p>${product.secondaryName}</p>
-                        <p><strong>Prix : ${product.price} €</strong></p>
+                        <p><strong>${product.price} €</strong></p>
                     </div>
                     
                     <div class="product-button">
-                        <!--pour ajouter des futur bouton comme ajouter au pannier-->
+                       <button>Add to Cart</button>
                     </div>
                    
                 </div>
