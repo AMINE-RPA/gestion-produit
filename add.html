@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajouter Produit</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Lien  pour Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+  <header>
+    <i class="fas fa-bars"></i>
+    <h1><i class="fas fa-plus"></i> Ajouter un produit</h1>
+  </header>
+  
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h2>      Menu</h2>
+    <a href="dashboard.html"><i class="fas fa-home"></i> Tableau de bord</a>
+    <a href="product.html"><i class="fas fa-box"></i> Produits</a>
+    <a href="#"><i class="fas fa-user"></i> Profil</a>
+    <a href="settings.html"><i class="fas fa-cog"></i> Paramètres</a>
+    <a href="#"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+  </div>
+
+
+  <main>
+    <form id="add-form">
+      
+      <label>Photo :</label>
+      <input type="file" id="photo" accept="image/*">
+
+      <input type="text" id="name" placeholder="Nom du produit" required>
+      <input type="text" id="category" placeholder="Categorie du produit" required>
+      <input type="text" id="ref" placeholder="Référence" required>
+      <input type="number" id="price" placeholder="Prix" required>
+      <input type="number" id="quantity" placeholder="quantité du produit" required>
+        
+      <button type="submit" class="btn">Ajouter</button>
+      <a href="index.html" class="btn-secondary">Annuler</a>
+    </form>
+  </main>
+
+  <script src="sidebar.js"></script>
+  <script src="add-edit-product.js"></script>
+  
+</body>
+</html>

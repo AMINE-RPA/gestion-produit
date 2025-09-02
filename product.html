@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion Produits</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Lien  pour Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+  <header>
+    <button id="toggle-btn"><i class="fas fa-bars"></i></button>
+    <h1><i class="fas fa-box"></i> Mes Produits</h1>
+    <a href="add.html" class="btn-add"><i class="fas fa-plus"></i> Ajouter</a>
+  </header>
+  
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h2>      Menu</h2>
+    <a href="dashboard.html"><i class="fas fa-home"></i> Tableau de bord</a>
+    <a href="product.html"><i class="fas fa-box"></i> Produits</a>
+    <a href="#"><i class="fas fa-user"></i> Profil</a>
+    <a href="settings.html"><i class="fas fa-cog"></i> Paramètres</a>
+    <a href="#"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+  </div>
+
+  <div class="content">
+    <main>
+      <div id="product-list" class="grid"></div>
+    </main>
+
+    <!-- Popup sélection -->
+    <div id="selection-popup" class="popup hidden">
+      <h3><i class="fas fa-check"></i> Sélection</h3>
+      <ul id="selection-list"></ul>
+    </div>
+
+    <!-- Fenêtre de modification -->
+    <div id="edit-modal" class="hidden">
+      <div class="modal-content">
+        <h2>Modifier Produit</h2>
+        <input type="text" id="edit-name" placeholder="Nom">
+        <input type="text" id="edit-categori" placeholder="Categorie">
+        <input type="text" id="edit-ref" placeholder="Référence">
+        <input type="number" id="edit-price" placeholder="Prix">
+        <input type="number" id="edit-quantity" placeholder="Quantité">
+
+
+        <div class="modal-actions">
+          <button id="save-edit" class="btn">Enregistrer</button>
+          <button id="cancel-edit" class="btn-secondary">Annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="sidebar.js"></script>
+  <script src="add-edit-product.js"></script>
+  
+</body>
+</html>

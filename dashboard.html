@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion Produits</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="pie-chart.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Lien  pour Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+  <header>
+    <button id="toggle-btn"><i class="fas fa-bars"></i></button>
+    <h1><i class="fas fa-box"></i> Mes Produits</h1>
+    <a href="add.html" class="btn-add"><i class="fas fa-plus"></i> Ajouter</a>
+  </header>
+  
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h2>      Menu</h2>
+    <a href="dashboard.html"><i class="fas fa-home"></i> Tableau de bord</a>
+    <a href="product.html"><i class="fas fa-box"></i> Produits</a>
+    <a href="#"><i class="fas fa-user"></i> Profil</a>
+    <a href="settings.html"><i class="fas fa-cog"></i> Paramètres</a>
+    <a href="#"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+  </div>
+
+  <div class="content">
+    <div class="stock-dashboard">
+      <div class="stock-widget">
+        <div id="pie-chart-info">
+          <h1>État du Stock</h1>
+          <p id="total-products">Nombre de produits <br> total : 0</p>
+          <div class="legend">
+            <span class="legend-item"><span class="color red"></span> Hors stock</span>
+            <span class="legend-item"><span class="color orange"></span> Faible stock</span>
+            <span class="legend-item"><span class="color green"></span> Disponible en stock</span>
+          </div>
+        </div>
+        <div class="pieChart"><canvas id="stockChart"></canvas></div>
+      </div>
+      
+      <div id="stock-list" class="stock-widget-list"></div>
+      
+    </div>
+
+    <main>
+      <div id="product-list" class="grid"></div>
+    </main>
+    <!-- Fenêtre de modification -->
+    <div id="edit-modal" class="hidden">
+      <div class="modal-content">
+        <h2>Modifier Produit</h2>
+        <input type="text" id="edit-name" placeholder="Nom">
+        <input type="text" id="edit-category" placeholder="Categorie">
+        <input type="text" id="edit-ref" placeholder="Référence">
+        <input type="number" min="0" id="edit-price" placeholder="Prix">
+        <input type="number" id="edit-quantity" placeholder="Quantité">
+
+
+        <div class="modal-actions">
+          <button id="save-edit" class="btn">Enregistrer</button>
+          <button id="cancel-edit" class="btn-secondary">Annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Import Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="common.js"></script>
+
+  <script src="pie-chart-script-stock.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="add-edit-product.js"></script>
+</body>
+</html>
